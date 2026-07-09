@@ -130,7 +130,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 import { Card, Modal, Alert, Badge } from '@branch418/shared/components';
 import { useWordpressAjax } from '@branch418/shared/composables';
 import FieldGroup from './ui/FieldGroup.vue';
@@ -153,6 +153,18 @@ const confirmOpen = ref(false);
 const pendingDelete = ref(null);
 
 const formTags = computed(() => formById(store, form.value.form_id)?.tags || []);
+
+// React to guide/checklist navigation ("add-template" opens the modal).
+watch(
+    () => store.pendingAction,
+    (action) => {
+        if (action === 'add-template') {
+            store.pendingAction = '';
+            openModal();
+        }
+    },
+    { immediate: true }
+);
 
 function emptyForm() {
     return { id: '', name: '', form_id: 0, parse_mode: 'none', body: store.defaultTemplate };

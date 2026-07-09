@@ -17,27 +17,35 @@
             </template>
 
             <template v-else-if="!store.loadError">
-                <nav class="tg-tabs">
-                    <button
-                        v-for="tab in tabs"
-                        :key="tab.key"
-                        type="button"
-                        class="tg-tabs__tab"
-                        :class="{ 'tg-tabs__tab--active': activeTab === tab.key }"
-                        @click="activeTab = tab.key"
-                    >
-                        {{ tab.label }}
-                        <span v-if="tab.count()" class="tg-tabs__count">{{ tab.count() }}</span>
-                    </button>
-                </nav>
+                <SetupGuide v-if="store.guideOpen" @close="hideGuide" />
 
-                <ConnectionsPanel v-if="activeTab === 'connections'" />
-                <template v-else-if="activeTab === 'bots'">
+                <div class="tg-tabbar">
+                    <nav class="tg-tabs">
+                        <button
+                            v-for="tab in tabs"
+                            :key="tab.key"
+                            type="button"
+                            class="tg-tabs__tab"
+                            :class="{ 'tg-tabs__tab--active': store.activeTab === tab.key }"
+                            @click="store.activeTab = tab.key"
+                        >
+                            {{ tab.label }}
+                            <span v-if="tab.count()" class="tg-tabs__count">{{ tab.count() }}</span>
+                        </button>
+                    </nav>
+                    <button v-if="!store.guideOpen" type="button" class="b418-btn b418-btn--ghost" @click="store.guideOpen = true">
+                        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.75" stroke="currentColor" stroke-width="1.3"/><path d="M6.3 6.1a1.75 1.75 0 1 1 2.4 1.9c-.5.2-.7.5-.7 1v.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11.4" r="0.7" fill="currentColor"/></svg>
+                        Setup guide
+                    </button>
+                </div>
+
+                <template v-if="store.activeTab === 'bots'">
                     <BotsSection />
                     <ChatsSection />
                 </template>
-                <TemplatesPanel v-else-if="activeTab === 'templates'" />
-                <LogPanel v-else-if="activeTab === 'log'" />
+                <ConnectionsPanel v-else-if="store.activeTab === 'connections'" />
+                <TemplatesPanel v-else-if="store.activeTab === 'templates'" />
+                <LogPanel v-else-if="store.activeTab === 'log'" />
             </template>
         </Column>
 
@@ -48,14 +56,28 @@
                 </Card>
             </Section>
 
-            <Section title="Quick start">
+            <Section title="Setup checklist">
                 <Card variant="muted">
-                    <ol class="tg-steps">
-                        <li><b>Add a bot</b> — create one with @BotFather and paste the token.</li>
-                        <li><b>Add a chat</b> — invite the bot, then detect or enter the chat ID.</li>
-                        <li><b>Connect a form</b> — pick form, bot and chats in “Connections”.</li>
-                        <li><b>Customize</b> — optionally craft a message template per form.</li>
-                    </ol>
+                    <div v-if="!store.loading">
+                        <button
+                            v-for="(step, index) in steps"
+                            :key="step.key"
+                            type="button"
+                            class="tg-check-row"
+                            :disabled="step.locked"
+                            @click="go(step)"
+                        >
+                            <span class="tg-check-row__icon" :class="{ 'tg-check-row__icon--done': step.done }">
+                                <svg v-if="step.done" width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <template v-else>{{ index + 1 }}</template>
+                            </span>
+                            <span class="tg-check-row__label">{{ step.title }}</span>
+                            <svg class="tg-check-row__chev" width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                    </div>
+                    <Alert v-if="!store.loading && setupComplete" variant="success" hide-icon>
+                        Setup complete — submissions are flowing to Telegram.
+                    </Alert>
                 </Card>
             </Section>
 
@@ -67,10 +89,6 @@
                         <li>Two-way replies from Telegram to visitors</li>
                         <li>Delivery retries &amp; full submission history</li>
                     </ul>
-                    <p class="tg-field__hint" style="margin: 0;">
-                        The Pro add-on plugs into this plugin's hook API — your bots, chats and
-                        connections carry over unchanged.
-                    </p>
                 </Card>
             </Section>
         </Column>
@@ -78,26 +96,30 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import {
     AdminLayout, Column, Section, Card, Alert, SidebarStats, SkeletonGroup,
 } from '@branch418/shared/components';
 import { useWordpressAjax } from '@branch418/shared/composables';
 import { provideStore } from './composables/useStore.js';
+import { useSetupSteps } from './composables/useSetupSteps.js';
+import SetupGuide from './components/SetupGuide.vue';
 import ConnectionsPanel from './components/ConnectionsPanel.vue';
 import BotsSection from './components/BotsSection.vue';
 import ChatsSection from './components/ChatsSection.vue';
 import TemplatesPanel from './components/TemplatesPanel.vue';
 import LogPanel from './components/LogPanel.vue';
 
+const GUIDE_HIDDEN_KEY = 'b418WpTgCf7GuideHidden';
+
 const store = provideStore();
 const { request } = useWordpressAjax();
+const { steps, setupComplete, go } = useSetupSteps(store);
 
-const activeTab = ref('connections');
-
+// Ordered to match the setup flow: ingredients → routing → message → monitoring.
 const tabs = [
-    { key: 'connections', label: 'Connections', count: () => store.rules.length },
     { key: 'bots', label: 'Bots & Chats', count: () => store.bots.length + store.chats.length },
+    { key: 'connections', label: 'Connections', count: () => store.rules.length },
     { key: 'templates', label: 'Templates', count: () => store.templates.length },
     { key: 'log', label: 'Activity Log', count: () => store.log.length },
 ];
@@ -132,16 +154,39 @@ const statsItems = computed(() => {
     ];
 });
 
+// Once the last required step is finished the guide has done its job —
+// hide it right away instead of waiting for the next page load. Manual
+// re-opens stay open: the watcher only fires when completion flips.
+watch(setupComplete, (complete) => {
+    if (complete && store.guideOpen) {
+        store.guideOpen = false;
+    }
+});
+
+function hideGuide() {
+    store.guideOpen = false;
+    try {
+        localStorage.setItem(GUIDE_HIDDEN_KEY, '1');
+    } catch (e) {
+        // Private mode / storage disabled — dismissal just won't persist.
+    }
+}
+
 onMounted(async () => {
     try {
         const data = await request('b418_wp_tg_cf7_bootstrap', {});
         Object.assign(store, data);
 
-        if (!data.rules.length) {
-            if (!data.bots.length) {
-                activeTab.value = 'bots';
-            }
+        const complete = data.bots.length && data.chats.length && data.rules.length;
+        store.activeTab = complete ? 'connections' : 'bots';
+
+        let guideHidden = false;
+        try {
+            guideHidden = localStorage.getItem(GUIDE_HIDDEN_KEY) === '1';
+        } catch (e) {
+            // Storage unavailable — treat as not hidden.
         }
+        store.guideOpen = !complete && !guideHidden;
     } catch (e) {
         store.loadError = e.message;
     } finally {

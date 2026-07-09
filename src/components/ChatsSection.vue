@@ -135,7 +135,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Card, Modal, Alert, Badge, EmptyState, Spoiler } from '@branch418/shared/components';
 import { useWordpressAjax } from '@branch418/shared/composables';
 import FieldGroup from './ui/FieldGroup.vue';
@@ -163,6 +163,18 @@ const testResult = ref(null);
 
 const confirmOpen = ref(false);
 const pendingDelete = ref(null);
+
+// React to guide/checklist navigation ("add-chat" opens the modal).
+watch(
+    () => store.pendingAction,
+    (action) => {
+        if (action === 'add-chat') {
+            store.pendingAction = '';
+            openModal();
+        }
+    },
+    { immediate: true }
+);
 
 function openModal(chat = null) {
     form.value = chat

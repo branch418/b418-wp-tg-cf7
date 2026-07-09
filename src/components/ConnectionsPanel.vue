@@ -19,7 +19,28 @@
         </Alert>
 
         <Alert v-if="!canCreate" variant="info" title="First things first">
-            Add at least one bot and one chat in the “Bots &amp; Chats” tab before creating a connection.
+            <p style="margin: 0 0 10px;">
+                A connection needs a bot to send with and a chat to deliver to. Set those up first:
+            </p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button
+                    v-if="!store.bots.length"
+                    type="button"
+                    class="b418-btn b418-btn--primary b418-btn--sm"
+                    @click="navigate(store, 'bots', 'add-bot')"
+                >
+                    1. Add a bot
+                </button>
+                <button
+                    v-if="!store.chats.length"
+                    type="button"
+                    class="b418-btn b418-btn--sm"
+                    :class="store.bots.length ? 'b418-btn--primary' : 'b418-btn--secondary'"
+                    @click="navigate(store, 'bots', 'add-chat')"
+                >
+                    {{ store.bots.length ? '' : '2. ' }}Add a chat
+                </button>
+            </div>
         </Alert>
 
         <EmptyState
@@ -77,8 +98,8 @@
         <div class="tg-form">
             <Alert v-if="modalError" variant="danger">{{ modalError }}</Alert>
 
-            <FieldGroup label="Name" hint="Optional — shown in the connection list.">
-                <input v-model.trim="form.name" type="text" class="tg-input" placeholder="e.g. Contact page → Sales group" />
+            <FieldGroup label="Name" hint="Auto-generated from the form and chats — type your own to override, clear to go back to auto.">
+                <input :value="form.name" type="text" class="tg-input" placeholder="e.g. Contact page → Sales group" @input="onNameInput" />
             </FieldGroup>
 
             <div class="tg-row">
@@ -146,13 +167,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { Card, Modal, Alert, Badge, EmptyState } from '@branch418/shared/components';
 import { useWordpressAjax } from '@branch418/shared/composables';
 import FieldGroup from './ui/FieldGroup.vue';
 import ToggleSwitch from './ui/ToggleSwitch.vue';
 import ConfirmDialog from './ui/ConfirmDialog.vue';
-import { useStore, botById, chatById, templateById, formTitle } from '../composables/useStore.js';
+import { useStore, navigate, botById, chatById, templateById, formTitle } from '../composables/useStore.js';
 import { useNotice } from '../composables/useNotice.js';
 
 const store = useStore();
@@ -170,8 +191,53 @@ const pendingDelete = ref(null);
 
 const canCreate = computed(() => store.bots.length > 0 && store.chats.length > 0);
 
+// React to guide/checklist navigation ("add-connection" opens the modal).
+watch(
+    () => store.pendingAction,
+    (action) => {
+        if (action === 'add-connection') {
+            store.pendingAction = '';
+            if (canCreate.value) {
+                openModal();
+            }
+        }
+    },
+    { immediate: true }
+);
+
 const availableTemplates = computed(() =>
     store.templates.filter((tpl) => !tpl.form_id || Number(tpl.form_id) === Number(form.value.form_id))
+);
+
+// Keep the name in sync with the selected form/chats until the user
+// types their own; an emptied field hands naming back to auto mode.
+const nameEdited = ref(false);
+
+function autoName() {
+    const chats = form.value.chat_ids
+        .map((id) => chatById(store, id)?.name)
+        .filter(Boolean);
+    const title = formTitle(store, form.value.form_id);
+    return chats.length ? `${title} → ${chats.join(', ')}` : title;
+}
+
+function onNameInput(event) {
+    form.value.name = event.target.value;
+    nameEdited.value = form.value.name.trim() !== '';
+}
+
+watch(
+    () => [form.value.form_id, form.value.chat_ids.join(',')],
+    () => {
+        if (!modalOpen.value || nameEdited.value) {
+            return;
+        }
+        // Untouched modal ("All forms", no chats yet) — nothing to name.
+        if (!Number(form.value.form_id) && !form.value.chat_ids.length) {
+            return;
+        }
+        form.value.name = autoName();
+    }
 );
 
 function emptyForm() {
@@ -210,6 +276,7 @@ function openModal(rule = null) {
     form.value = rule
         ? { ...rule, chat_ids: [...rule.chat_ids] }
         : emptyForm();
+    nameEdited.value = !!rule;
     modalError.value = '';
     modalOpen.value = true;
 }
@@ -218,7 +285,7 @@ async function save() {
     saving.value = true;
     modalError.value = '';
     try {
-        const data = await request('b418_wp_tg_cf7_save_rule', { rule: form.value });
+        const data = await request('b418_wp_tg_cf7_save_rule', { rule: { ...form.value, name: form.value.name.trim() } });
         store.rules = data.rules;
         modalOpen.value = false;
         show('success', 'Connection saved.');

@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Card, Modal, Alert, Badge, EmptyState } from '@branch418/shared/components';
 import { useWordpressAjax } from '@branch418/shared/composables';
 import FieldGroup from './ui/FieldGroup.vue';
@@ -103,6 +103,18 @@ const form = ref({ id: '', name: '', token: '' });
 
 const confirmOpen = ref(false);
 const pendingDelete = ref(null);
+
+// React to guide/checklist navigation ("add-bot" opens the modal).
+watch(
+    () => store.pendingAction,
+    (action) => {
+        if (action === 'add-bot') {
+            store.pendingAction = '';
+            openModal();
+        }
+    },
+    { immediate: true }
+);
 
 function maskToken(token) {
     if (!token || token.length < 12) {

@@ -20,11 +20,25 @@ export function provideStore() {
         log: [],
         defaultTemplate: '',
         specialTags: {},
+        // UI navigation state — lets any component jump to a tab and
+        // trigger an action there (e.g. open the "add bot" modal).
+        activeTab: 'bots',
+        pendingAction: '',
+        guideOpen: false,
     });
 
     provide(STORE_KEY, store);
 
     return store;
+}
+
+/**
+ * Jump to a tab and optionally fire an action the target panel listens
+ * for via `store.pendingAction` (e.g. 'add-bot' opens the bot modal).
+ */
+export function navigate(store, tab, action = '') {
+    store.activeTab = tab;
+    store.pendingAction = action;
 }
 
 export function useStore() {
