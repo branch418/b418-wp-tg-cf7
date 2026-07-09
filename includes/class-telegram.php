@@ -30,7 +30,7 @@ class Telegram {
 		if ( empty( $token ) ) {
 			return array(
 				'ok'          => false,
-				'description' => __( 'Bot token is empty.', 'b418-wp-tg-cf7' ),
+				'description' => __( 'Bot token is empty.', 'b418-telegram-for-contact-form-7' ),
 			);
 		}
 
@@ -54,7 +54,7 @@ class Telegram {
 		if ( ! is_array( $body ) || ! isset( $body['ok'] ) ) {
 			return array(
 				'ok'          => false,
-				'description' => __( 'Unexpected response from the Telegram API.', 'b418-wp-tg-cf7' ),
+				'description' => __( 'Unexpected response from the Telegram API.', 'b418-telegram-for-contact-form-7' ),
 			);
 		}
 

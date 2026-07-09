@@ -49,7 +49,7 @@ class Template_Engine {
 	 * @return string
 	 */
 	public static function default_template() {
-		$body = __( "📩 New form submission\n\nForm: [_form_title]\nSite: [_site_title]\nDate: [_date] [_time]\n\n[all_fields]", 'b418-wp-tg-cf7' );
+		$body = __( "📩 New form submission\n\nForm: [_form_title]\nSite: [_site_title]\nDate: [_date] [_time]\n\n[all_fields]", 'b418-telegram-for-contact-form-7' );
 
 		/**
 		 * Filter the built-in default template body.
@@ -66,15 +66,15 @@ class Template_Engine {
 	 */
 	public static function special_tags() {
 		return array(
-			'all_fields'  => __( 'All submitted fields as a list', 'b418-wp-tg-cf7' ),
-			'_form_title' => __( 'Form title', 'b418-wp-tg-cf7' ),
-			'_site_title' => __( 'Site title', 'b418-wp-tg-cf7' ),
-			'_site_url'   => __( 'Site URL', 'b418-wp-tg-cf7' ),
-			'_page_url'   => __( 'Page the form was submitted from', 'b418-wp-tg-cf7' ),
-			'_date'       => __( 'Submission date', 'b418-wp-tg-cf7' ),
-			'_time'       => __( 'Submission time', 'b418-wp-tg-cf7' ),
-			'_user_ip'    => __( 'Visitor IP address', 'b418-wp-tg-cf7' ),
-			'_user_agent' => __( 'Visitor browser (user agent)', 'b418-wp-tg-cf7' ),
+			'all_fields'  => __( 'All submitted fields as a list', 'b418-telegram-for-contact-form-7' ),
+			'_form_title' => __( 'Form title', 'b418-telegram-for-contact-form-7' ),
+			'_site_title' => __( 'Site title', 'b418-telegram-for-contact-form-7' ),
+			'_site_url'   => __( 'Site URL', 'b418-telegram-for-contact-form-7' ),
+			'_page_url'   => __( 'Page the form was submitted from', 'b418-telegram-for-contact-form-7' ),
+			'_date'       => __( 'Submission date', 'b418-telegram-for-contact-form-7' ),
+			'_time'       => __( 'Submission time', 'b418-telegram-for-contact-form-7' ),
+			'_user_ip'    => __( 'Visitor IP address', 'b418-telegram-for-contact-form-7' ),
+			'_user_agent' => __( 'Visitor browser (user agent)', 'b418-telegram-for-contact-form-7' ),
 		);
 	}
 
@@ -126,20 +126,20 @@ class Template_Engine {
 					continue;
 				}
 				/* translators: %s: form field name. */
-				$fields[ $tag->name ] = sprintf( __( '(sample value for “%s”)', 'b418-wp-tg-cf7' ), $tag->name );
+				$fields[ $tag->name ] = sprintf( __( '(sample value for “%s”)', 'b418-telegram-for-contact-form-7' ), $tag->name );
 			}
 		}
 
 		$specials = array(
 			'all_fields'  => self::format_all_fields( $fields, 'none' ),
-			'_form_title' => $form ? $form->title() : __( 'Sample form', 'b418-wp-tg-cf7' ),
+			'_form_title' => $form ? $form->title() : __( 'Sample form', 'b418-telegram-for-contact-form-7' ),
 			'_site_title' => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 			'_site_url'   => home_url(),
 			'_page_url'   => home_url(),
 			'_date'       => wp_date( get_option( 'date_format' ) ),
 			'_time'       => wp_date( get_option( 'time_format' ) ),
 			'_user_ip'    => '127.0.0.1',
-			'_user_agent' => __( '(test message)', 'b418-wp-tg-cf7' ),
+			'_user_agent' => __( '(test message)', 'b418-telegram-for-contact-form-7' ),
 		);
 
 		return self::replace( $body, array_merge( $fields, $specials ), $fields, $parse_mode );

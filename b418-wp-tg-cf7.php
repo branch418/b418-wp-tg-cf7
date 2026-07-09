@@ -11,7 +11,7 @@
  * Requires Plugins: contact-form-7
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: b418-wp-tg-cf7
+ * Text Domain: b418-telegram-for-contact-form-7
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

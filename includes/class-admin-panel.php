@@ -26,8 +26,8 @@ class Admin_Panel {
 
 	public static function register_admin_menu() {
 		add_menu_page(
-			__( 'Telegram for Contact Form 7', 'b418-wp-tg-cf7' ),
-			__( 'CF7 Telegram', 'b418-wp-tg-cf7' ),
+			__( 'Telegram for Contact Form 7', 'b418-telegram-for-contact-form-7' ),
+			__( 'CF7 Telegram', 'b418-telegram-for-contact-form-7' ),
 			'manage_options',
 			self::MENU_SLUG,
 			array( self::class, 'display_page' ),
@@ -99,7 +99,7 @@ class Admin_Panel {
 
 		printf(
 			'<div class="notice notice-error"><p>%s</p></div>',
-			esc_html__( 'Telegram for Contact Form 7 requires the Contact Form 7 plugin to be installed and activated.', 'b418-wp-tg-cf7' )
+			esc_html__( 'Telegram for Contact Form 7 requires the Contact Form 7 plugin to be installed and activated.', 'b418-telegram-for-contact-form-7' )
 		);
 	}
 
@@ -107,7 +107,7 @@ class Admin_Panel {
 		$settings = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( admin_url( 'admin.php?page=' . self::MENU_SLUG ) ),
-			esc_html__( 'Settings', 'b418-wp-tg-cf7' )
+			esc_html__( 'Settings', 'b418-telegram-for-contact-form-7' )
 		);
 		array_unshift( $links, $settings );
 
