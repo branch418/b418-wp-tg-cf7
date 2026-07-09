@@ -15,7 +15,7 @@ export default defineConfig({
         emptyOutDir: false,
         lib: {
             entry: path.resolve(__dirname, 'src/admin.js'),
-            name: 'b418BoilerplateAdmin',
+            name: 'b418WpTgCf7Admin',
             fileName: 'admin',
             formats: ['iife']
         },

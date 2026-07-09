@@ -1,0 +1,422 @@
+// Local UI primitives (inputs, lists, tabs…) styled with the shared
+// @branch418 design tokens. Loaded once, unscoped, from Admin.vue.
+@use '@branch418/shared/styles/variables' as *;
+
+// ─── Tabs ─────────────────────────────────────────────────────────
+.tg-tabs {
+    display: flex;
+    gap: $sp-1;
+    padding: $sp-1;
+    background: $surface-alt;
+    border-radius: $radius-lg;
+    width: fit-content;
+    max-width: 100%;
+    flex-wrap: wrap;
+
+    &__tab {
+        display: inline-flex;
+        align-items: center;
+        gap: $sp-2;
+        padding: $sp-2 $sp-4;
+        border: none;
+        border-radius: $radius;
+        background: transparent;
+        color: $text-muted;
+        font-family: $font-family;
+        font-size: $font-sm;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all $transition;
+        white-space: nowrap;
+
+        &:hover {
+            color: $text;
+        }
+
+        &--active {
+            background: $bg;
+            color: $primary;
+            box-shadow: $shadow-sm;
+        }
+    }
+
+    &__count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        border-radius: 9px;
+        background: $primary-light;
+        color: $primary;
+        font-size: $font-xs;
+        font-weight: 700;
+    }
+}
+
+// ─── Form controls ────────────────────────────────────────────────
+.tg-form {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-4;
+}
+
+.tg-row {
+    display: flex;
+    gap: $sp-3;
+
+    > * {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+.tg-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    > label {
+        font-size: $font-sm;
+        font-weight: 600;
+        color: $text-secondary;
+    }
+
+    &__req {
+        color: $danger;
+    }
+
+    &__hint {
+        font-size: $font-xs;
+        color: $text-muted;
+        margin: 0;
+        line-height: 1.45;
+
+        a {
+            color: $primary;
+        }
+    }
+}
+
+.tg-input,
+.tg-select,
+.tg-textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: $sp-2 $sp-3;
+    border: 1px solid $border-strong;
+    border-radius: $radius;
+    background: $bg;
+    color: $text;
+    font-family: $font-family;
+    font-size: $font-md;
+    line-height: 1.5;
+    transition: border-color $transition, box-shadow $transition;
+
+    &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 3px $primary-light;
+    }
+
+    &:disabled {
+        background: $surface;
+        color: $text-muted;
+        cursor: not-allowed;
+    }
+}
+
+.tg-textarea {
+    font-family: $font-mono;
+    font-size: $font-sm;
+    min-height: 190px;
+    resize: vertical;
+}
+
+// ─── Item lists (bots / chats / connections / templates) ──────────
+.tg-list {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-3;
+}
+
+.tg-item {
+    display: flex;
+    align-items: center;
+    gap: $sp-4;
+    padding: $sp-3 $sp-4;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    background: $bg;
+    transition: border-color $transition, box-shadow $transition;
+
+    &:hover {
+        border-color: $border-strong;
+        box-shadow: $shadow-sm;
+    }
+
+    &--disabled {
+        opacity: 0.6;
+        background: $surface;
+    }
+
+    &__main {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: $sp-2;
+        font-size: $font-md;
+        font-weight: 600;
+        color: $text;
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px $sp-3;
+        margin-top: 4px;
+        font-size: $font-sm;
+        color: $text-muted;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: $sp-1;
+        flex-shrink: 0;
+    }
+}
+
+.tg-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: $radius;
+    background: transparent;
+    color: $text-muted;
+    cursor: pointer;
+    transition: all $transition;
+
+    &:hover:not(:disabled) {
+        background: $surface-alt;
+        color: $primary;
+    }
+
+    &--danger:hover:not(:disabled) {
+        background: $danger-light;
+        color: $danger;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.b418-btn--danger {
+    background: $danger;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+        background: #dc2626;
+        transform: translateY(-1px);
+    }
+}
+
+// ─── Misc ─────────────────────────────────────────────────────────
+.tg-code {
+    font-family: $font-mono;
+    font-size: 12px;
+    background: $surface-alt;
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: $text-secondary;
+    word-break: break-all;
+}
+
+.tg-pre {
+    margin: 0;
+    padding: $sp-3 $sp-4;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius;
+    font-family: $font-mono;
+    font-size: 12px;
+    line-height: 1.6;
+    color: $text-secondary;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.tg-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $sp-2;
+}
+
+.tg-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border: 1px solid $primary-mid;
+    border-radius: 20px;
+    background: $primary-light;
+    color: $primary;
+    font-family: $font-mono;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all $transition;
+
+    &:hover {
+        background: $primary-mid;
+    }
+}
+
+.tg-check-list {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-2;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: $sp-2 $sp-3;
+    border: 1px solid $border;
+    border-radius: $radius;
+    background: $surface;
+}
+
+.tg-check {
+    display: flex;
+    align-items: center;
+    gap: $sp-2;
+    font-size: $font-sm;
+    color: $text-secondary;
+    cursor: pointer;
+
+    input {
+        accent-color: $primary;
+        margin: 0;
+    }
+}
+
+.tg-toggle {
+    position: relative;
+    width: 38px;
+    height: 22px;
+    border: none;
+    border-radius: 11px;
+    background: $border-strong;
+    cursor: pointer;
+    transition: background $transition;
+    flex-shrink: 0;
+    padding: 0;
+
+    &__knob {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: $shadow-sm;
+        transition: transform $transition;
+    }
+
+    &--on {
+        background: $primary;
+
+        .tg-toggle__knob {
+            transform: translateX(16px);
+        }
+    }
+}
+
+.tg-arrow {
+    color: $text-muted;
+    flex-shrink: 0;
+}
+
+// ─── Log table ────────────────────────────────────────────────────
+.tg-table-wrap {
+    overflow-x: auto;
+}
+
+.tg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: $font-sm;
+
+    th {
+        text-align: left;
+        padding: $sp-2 $sp-3;
+        color: $text-muted;
+        font-size: $font-xs;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-bottom: 1px solid $border;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: $sp-3;
+        border-bottom: 1px solid $border;
+        color: $text-secondary;
+        vertical-align: top;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+}
+
+// ─── Sidebar extras ───────────────────────────────────────────────
+.tg-steps {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: $sp-2;
+    font-size: $font-sm;
+    color: $text-secondary;
+    line-height: 1.5;
+
+    b {
+        color: $text;
+    }
+}
+
+.tg-pro-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: $sp-2;
+    font-size: $font-sm;
+    color: $text-secondary;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: $sp-2;
+
+        &::before {
+            content: '✦';
+            color: $primary;
+            flex-shrink: 0;
+        }
+    }
+}
