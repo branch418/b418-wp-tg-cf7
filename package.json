@@ -1,0 +1,24 @@
+{
+    "name": "b418-boilerplate",
+    "scripts": {
+        "vite-watch:admin": "vite build --watch --config vite.config.js",
+        "vite-build:admin": "vite build --config vite.config.js",
+        "clean:dist": "rm -rf dist",
+        "build": "npm-run-all clean:dist vite-build:admin",
+        "watch": "npm-run-all --parallel vite-watch:admin"
+    },
+    "dependencies": {
+        "@branch418/shared": "^1.0.4",
+        "normalize-css": "^2.3.1",
+        "sass": "^1.79.4",
+        "vue": "^3.5.27",
+        "webpack": "^5.95.0",
+        "webpack-cli": "^5.1.4"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^6.0.4",
+        "npm-run-all": "^4.1.5",
+        "vite": "^7.3.1",
+        "webpack-bundle-analyzer": "^4.10.2"
+    }
+}
