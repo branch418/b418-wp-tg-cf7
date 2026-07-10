@@ -1,7 +1,7 @@
 {
-    "name": "b418-wp-tg-cf7",
+    "name": "b418-tg-cf7",
     "version": "1.0.0",
-    "description": "Admin UI build for the B418 Telegram for Contact Form 7 WordPress plugin",
+    "description": "Admin UI build for the branch418 Telegram for Contact Form 7 WordPress plugin",
     "license": "GPL-2.0-or-later",
     "private": true,
     "scripts": {

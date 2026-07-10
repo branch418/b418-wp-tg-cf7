@@ -88,7 +88,7 @@ class Settings {
 	public static function upsert( $type, $item ) {
 		$collections = self::collections();
 		if ( ! isset( $collections[ $type ] ) || ! is_array( $item ) ) {
-			return new \WP_Error( 'invalid_type', __( 'Unknown data type.', 'b418-telegram-for-contact-form-7' ) );
+			return new \WP_Error( 'invalid_type', __( 'Unknown data type.', 'b418-tg-cf7' ) );
 		}
 
 		$item = call_user_func( $collections[ $type ]['sanitize'], $item );

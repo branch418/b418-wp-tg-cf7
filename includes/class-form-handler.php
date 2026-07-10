@@ -78,7 +78,7 @@ class Form_Handler {
 					'form_title' => $contact_form->title(),
 					'chat_name'  => '—',
 					'ok'         => false,
-					'error'      => __( 'The bot assigned to this connection no longer exists.', 'b418-telegram-for-contact-form-7' ),
+					'error'      => __( 'The bot assigned to this connection no longer exists.', 'b418-tg-cf7' ),
 				)
 			);
 

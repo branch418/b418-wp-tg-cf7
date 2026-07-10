@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Admin_Panel {
 
-	const MENU_SLUG = 'b418-wp-tg-cf7';
+	const MENU_SLUG = 'b418-tg-cf7';
 
 	public static function init() {
 		add_action( 'admin_menu', array( self::class, 'register_admin_menu' ), 25 );
@@ -26,8 +26,8 @@ class Admin_Panel {
 
 	public static function register_admin_menu() {
 		add_menu_page(
-			__( 'Telegram for Contact Form 7', 'b418-telegram-for-contact-form-7' ),
-			__( 'CF7 Telegram', 'b418-telegram-for-contact-form-7' ),
+			__( 'Telegram for Contact Form 7', 'b418-tg-cf7' ),
+			__( 'CF7 Telegram', 'b418-tg-cf7' ),
 			'manage_options',
 			self::MENU_SLUG,
 			array( self::class, 'display_page' ),
@@ -49,7 +49,7 @@ class Admin_Panel {
 
 	public static function display_page() {
 		?>
-		<div id="b418-wp-tg-cf7-container"></div>
+		<div id="b418-tg-cf7-container"></div>
 		<style>
 			#wpbody-content .metabox-prefs ~ .error, #wpbody-content .metabox-prefs ~ .notice, #wpbody-content .metabox-prefs ~ .updated{
 				display: none !important;
@@ -63,8 +63,8 @@ class Admin_Panel {
 			return;
 		}
 
-		wp_enqueue_style( 'b418-wp-tg-cf7-admin-vue', B418_WP_TG_CF7_URI . 'dist/admin.css', array(), B418_WP_TG_CF7_VERSION );
-		wp_enqueue_script( 'b418-wp-tg-cf7-admin', B418_WP_TG_CF7_URI . 'dist/admin.iife.js', array(), B418_WP_TG_CF7_VERSION, true );
+		wp_enqueue_style( 'b418-tg-cf7-admin-vue', B418_WP_TG_CF7_URI . 'dist/admin.css', array(), B418_WP_TG_CF7_VERSION );
+		wp_enqueue_script( 'b418-tg-cf7-admin', B418_WP_TG_CF7_URI . 'dist/admin.iife.js', array(), B418_WP_TG_CF7_VERSION, true );
 
 		$localize_data = array(
 			'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
@@ -81,7 +81,7 @@ class Admin_Panel {
 		 */
 		$localize_data = apply_filters( 'b418_wp_tg_cf7_localize_data', $localize_data );
 
-		wp_localize_script( 'b418-wp-tg-cf7-admin', 'b418WpTgCf7Data', $localize_data );
+		wp_localize_script( 'b418-tg-cf7-admin', 'b418WpTgCf7Data', $localize_data );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Admin_Panel {
 
 		printf(
 			'<div class="notice notice-error"><p>%s</p></div>',
-			esc_html__( 'Telegram for Contact Form 7 requires the Contact Form 7 plugin to be installed and activated.', 'b418-telegram-for-contact-form-7' )
+			esc_html__( 'Telegram for Contact Form 7 requires the Contact Form 7 plugin to be installed and activated.', 'b418-tg-cf7' )
 		);
 	}
 
@@ -107,7 +107,7 @@ class Admin_Panel {
 		$settings = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( admin_url( 'admin.php?page=' . self::MENU_SLUG ) ),
-			esc_html__( 'Settings', 'b418-telegram-for-contact-form-7' )
+			esc_html__( 'Settings', 'b418-tg-cf7' )
 		);
 		array_unshift( $links, $settings );
 

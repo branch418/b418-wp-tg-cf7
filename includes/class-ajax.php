@@ -48,7 +48,7 @@ class Ajax {
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error(
-				array( 'message' => __( 'You are not allowed to manage these settings.', 'b418-telegram-for-contact-form-7' ) ),
+				array( 'message' => __( 'You are not allowed to manage these settings.', 'b418-tg-cf7' ) ),
 				403
 			);
 		}
@@ -138,7 +138,7 @@ class Ajax {
 		$bot = self::json_param( 'bot' );
 
 		if ( empty( $bot['token'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Please enter a bot token.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Please enter a bot token.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$me = Telegram::get_me( trim( (string) $bot['token'] ) );
@@ -147,7 +147,7 @@ class Ajax {
 			wp_send_json_error(
 				array(
 					/* translators: %s: Telegram API error message. */
-					'message' => sprintf( __( 'Telegram rejected this token: %s', 'b418-telegram-for-contact-form-7' ), $me['description'] ),
+					'message' => sprintf( __( 'Telegram rejected this token: %s', 'b418-tg-cf7' ), $me['description'] ),
 				),
 				400
 			);
@@ -182,7 +182,7 @@ class Ajax {
 		$chat = self::json_param( 'chat' );
 
 		if ( empty( $chat['chat_id'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Please enter a chat ID.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Please enter a chat ID.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$saved = Settings::upsert( 'chat', $chat );
@@ -207,16 +207,16 @@ class Ajax {
 		$chat = Settings::sanitize_chat( self::json_param( 'chat' ) );
 
 		if ( ! $bot ) {
-			wp_send_json_error( array( 'message' => __( 'Please choose a bot to send the test with.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Please choose a bot to send the test with.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		if ( empty( $chat['chat_id'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Please enter a chat ID first.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Please enter a chat ID first.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$text = sprintf(
 			/* translators: 1: site title, 2: bot name. */
-			__( "✅ Test message from “%1\$s”.\nBot “%2\$s” can deliver to this chat.", 'b418-telegram-for-contact-form-7' ),
+			__( "✅ Test message from “%1\$s”.\nBot “%2\$s” can deliver to this chat.", 'b418-tg-cf7' ),
 			wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 			$bot['name']
 		);
@@ -227,7 +227,7 @@ class Ajax {
 			wp_send_json_error( array( 'message' => $result['description'] ), 400 );
 		}
 
-		wp_send_json_success( array( 'message' => __( 'Test message delivered!', 'b418-telegram-for-contact-form-7' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Test message delivered!', 'b418-tg-cf7' ) ) );
 	}
 
 	public static function handle_detect_chats() {
@@ -236,7 +236,7 @@ class Ajax {
 		$bot = Settings::find( 'bot', self::text_param( 'bot_id' ) );
 
 		if ( ! $bot ) {
-			wp_send_json_error( array( 'message' => __( 'Please choose a bot first.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Please choose a bot first.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$updates = Telegram::get_updates( $bot['token'] );
@@ -280,7 +280,7 @@ class Ajax {
 		$template = self::json_param( 'template' );
 
 		if ( empty( $template['name'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Please name the template.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Please name the template.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$saved = Settings::upsert( 'template', $template );
@@ -306,7 +306,7 @@ class Ajax {
 		$rule = self::json_param( 'rule' );
 
 		if ( empty( $rule['bot_id'] ) || empty( $rule['chat_ids'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'A connection needs a bot and at least one chat.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'A connection needs a bot and at least one chat.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$saved = Settings::upsert( 'rule', $rule );
@@ -330,13 +330,13 @@ class Ajax {
 		$rule = Settings::find( 'rule', self::text_param( 'id' ) );
 
 		if ( ! $rule ) {
-			wp_send_json_error( array( 'message' => __( 'Connection not found.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Connection not found.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$bot = Settings::find( 'bot', $rule['bot_id'] );
 
 		if ( ! $bot ) {
-			wp_send_json_error( array( 'message' => __( 'The bot assigned to this connection no longer exists.', 'b418-telegram-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'The bot assigned to this connection no longer exists.', 'b418-tg-cf7' ) ), 400 );
 		}
 
 		$form = null;
@@ -373,7 +373,7 @@ class Ajax {
 			wp_send_json_error(
 				array(
 					/* translators: 1: number of delivered messages, 2: error details. */
-					'message' => sprintf( __( 'Delivered %1$d message(s), but some failed — %2$s', 'b418-telegram-for-contact-form-7' ), $sent, implode( '; ', $errors ) ),
+					'message' => sprintf( __( 'Delivered %1$d message(s), but some failed — %2$s', 'b418-tg-cf7' ), $sent, implode( '; ', $errors ) ),
 				),
 				400
 			);
@@ -382,7 +382,7 @@ class Ajax {
 		wp_send_json_success(
 			array(
 				/* translators: %d: number of chats the test was delivered to. */
-				'message' => sprintf( __( 'Test delivered to %d chat(s).', 'b418-telegram-for-contact-form-7' ), $sent ),
+				'message' => sprintf( __( 'Test delivered to %d chat(s).', 'b418-tg-cf7' ), $sent ),
 			)
 		);
 	}

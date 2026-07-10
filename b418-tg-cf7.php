@@ -4,14 +4,14 @@
  * Description: Sends Contact Form 7 submissions to Telegram. Connect multiple bots and chats, route any form to any chat, and customize the message per form with templates.
  * Author: branch418
  * Author URI: https://branch418.dev
- * Author URI: https://branch418.dev/plugins/wp-tg-cf7
+ * Plugin URI: https://branch418.dev/plugins/wp-tg-cf7
  * Version: 1.0.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Requires Plugins: contact-form-7
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: b418-telegram-for-contact-form-7
+ * Text Domain: b418-tg-cf7
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
