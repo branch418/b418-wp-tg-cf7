@@ -1,8 +1,8 @@
-=== B418 Telegram for Contact Form 7 ===
+=== branch418 Telegram for Contact Form 7 ===
 Contributors: branch418
 Tags: contact form 7, telegram, notifications, cf7, forms
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.0.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
@@ -59,6 +59,20 @@ Yes — set the optional thread ID on the chat.
 = Does it change how CF7 sends email? =
 
 No. Telegram delivery runs in addition to normal CF7 mail and never interrupts it.
+
+== External services ==
+
+This plugin connects to the Telegram Bot API to deliver Contact Form 7 submissions to Telegram chats, groups, and channels. This is a core feature of the plugin: without it, submissions cannot be relayed to Telegram.
+
+It sends data to Telegram's servers (api.telegram.org) in the following cases:
+
+* When a form is submitted and a connection routes it to a bot, the rendered message text (built from the form fields and template you configure, which may include field values, the form title, page URL, and the submitter's IP address) is sent to the configured chat(s).
+* When you add or edit a bot in the admin, the bot token is sent to verify it and fetch the bot's profile.
+* When you use "Detect chats" or send a test message in the admin, requests are sent to the bot to fetch recent updates or deliver the test message.
+
+No data is sent to Telegram unless you have configured a bot and an active connection, or you explicitly trigger an admin action (saving a bot, detecting chats, sending a test).
+
+This service is provided by Telegram: [Terms of Service](https://telegram.org/tos), [Privacy Policy](https://telegram.org/privacy).
 
 == Changelog ==
 

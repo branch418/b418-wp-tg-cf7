@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: B418 Telegram for Contact Form 7
- * Plugin URI: https://branch418.dev/plugins/b418-wp-tg-cf7
+ * Plugin Name: branch418 Telegram for Contact Form 7
  * Description: Sends Contact Form 7 submissions to Telegram. Connect multiple bots and chats, route any form to any chat, and customize the message per form with templates.
  * Author: branch418
  * Author URI: https://branch418.dev
+ * Author URI: https://branch418.dev/plugins/wp-tg-cf7
  * Version: 1.0.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
