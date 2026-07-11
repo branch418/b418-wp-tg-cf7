@@ -127,15 +127,33 @@ class Form_Handler {
 
 			/**
 			 * Fires after each Telegram delivery attempt.
-			 * Pro hooks here to send file attachments as follow-up messages.
+			 * Pro hooks here to record delivery history, schedule retries and
+			 * send file attachments as follow-up messages.
 			 *
 			 * @param array             $result     Telegram API response.
 			 * @param array             $rule       Routing rule.
 			 * @param array             $chat       Chat item.
 			 * @param array             $bot        Bot item.
 			 * @param \WPCF7_Submission $submission Submission.
+			 * @param array             $context    Extra context: rendered text, parse
+			 *                                      mode, and source form info — enough
+			 *                                      for Pro to record/resend the delivery
+			 *                                      without holding a submission reference.
 			 */
-			do_action( 'b418_wp_tg_cf7_after_send', $result, $rule, $chat, $bot, $submission );
+			do_action(
+				'b418_wp_tg_cf7_after_send',
+				$result,
+				$rule,
+				$chat,
+				$bot,
+				$submission,
+				array(
+					'text'       => $text,
+					'parse_mode' => $parse_mode,
+					'form_id'    => $contact_form->id(),
+					'form_title' => $contact_form->title(),
+				)
+			);
 		}
 	}
 }
