@@ -50,11 +50,6 @@ class Admin_Panel {
 	public static function display_page() {
 		?>
 		<div id="b418-tg-cf7-container"></div>
-		<style>
-			#wpbody-content .metabox-prefs ~ .error, #wpbody-content .metabox-prefs ~ .notice, #wpbody-content .metabox-prefs ~ .updated{
-				display: none !important;
-			}
-		</style>
 		<?php
 	}
 
@@ -64,6 +59,10 @@ class Admin_Panel {
 		}
 
 		wp_enqueue_style( 'b418-tg-cf7-admin-vue', B418_WP_TG_CF7_URI . 'dist/admin.css', array(), B418_WP_TG_CF7_VERSION );
+		wp_add_inline_style(
+			'b418-tg-cf7-admin-vue',
+			'#wpbody-content .metabox-prefs ~ .error, #wpbody-content .metabox-prefs ~ .notice, #wpbody-content .metabox-prefs ~ .updated { display: none !important; }'
+		);
 		wp_enqueue_script( 'b418-tg-cf7-admin', B418_WP_TG_CF7_URI . 'dist/admin.iife.js', array(), B418_WP_TG_CF7_VERSION, true );
 
 		$localize_data = array(
