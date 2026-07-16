@@ -60,6 +60,13 @@ Yes — set the optional thread ID on the chat.
 
 No. Telegram delivery runs in addition to normal CF7 mail and never interrupts it.
 
+== Screenshots ==
+
+1. Add bots, detect chats — no ID hunting
+2. Route any form to any chat
+3. Messages that read like notifications
+4. Every delivery, at a glance
+
 == External services ==
 
 This plugin connects to the Telegram Bot API to deliver Contact Form 7 submissions to Telegram chats, groups, and channels. This is a core feature of the plugin: without it, submissions cannot be relayed to Telegram.
