@@ -68,6 +68,7 @@
                         {{ rule.name || formTitle(store, rule.form_id) }}
                         <Badge v-if="!rule.form_id" variant="accent" size="sm">all forms</Badge>
                         <Badge v-if="brokenParts(rule)" variant="danger" size="sm">{{ brokenParts(rule) }}</Badge>
+                        <component v-if="pro?.components?.RuleBadges" :is="pro.components.RuleBadges" :rule="rule" />
                     </div>
                     <div class="tg-item__meta">
                         <span>{{ formTitle(store, rule.form_id) }}</span>
@@ -142,6 +143,8 @@
             <FieldGroup label="Enabled">
                 <ToggleSwitch v-model="form.enabled" />
             </FieldGroup>
+
+            <component v-if="pro?.components?.RuleModalExtras" :is="pro.components.RuleModalExtras" :rule="form" />
         </div>
 
         <template #footer="{ close }">
@@ -175,10 +178,12 @@ import ToggleSwitch from './ui/ToggleSwitch.vue';
 import ConfirmDialog from './ui/ConfirmDialog.vue';
 import { useStore, navigate, botById, chatById, templateById, formTitle } from '../composables/useStore.js';
 import { useNotice } from '../composables/useNotice.js';
+import { usePro } from '../composables/usePro.js';
 
 const store = useStore();
 const { request } = useWordpressAjax();
 const { notice, show, dismiss } = useNotice();
+const pro = usePro();
 
 const modalOpen = ref(false);
 const modalError = ref('');

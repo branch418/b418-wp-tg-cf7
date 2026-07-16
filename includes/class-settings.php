@@ -201,7 +201,7 @@ class Settings {
 			$chat_ids = array_values( array_filter( array_map( 'sanitize_key', $item['chat_ids'] ) ) );
 		}
 
-		return array(
+		$clean = array(
 			'id'          => sanitize_key( $item['id'] ?? '' ),
 			'name'        => sanitize_text_field( $item['name'] ?? '' ),
 			'form_id'     => absint( $item['form_id'] ?? 0 ),
@@ -210,5 +210,15 @@ class Settings {
 			'template_id' => sanitize_key( $item['template_id'] ?? '' ),
 			'enabled'     => ! empty( $item['enabled'] ),
 		);
+
+		/**
+		 * Filter the sanitized rule before it is persisted.
+		 * Pro uses this to sanitize and merge its own keys (conditions, attachments)
+		 * from the raw input item.
+		 *
+		 * @param array $clean Sanitized rule.
+		 * @param array $item  Raw input item.
+		 */
+		return apply_filters( 'b418_wp_tg_cf7_sanitize_rule', $clean, $item );
 	}
 }

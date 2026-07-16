@@ -46,6 +46,7 @@
                 <ConnectionsPanel v-else-if="store.activeTab === 'connections'" />
                 <TemplatesPanel v-else-if="store.activeTab === 'templates'" />
                 <LogPanel v-else-if="store.activeTab === 'log'" />
+                <component v-else-if="pro?.panels?.[store.activeTab]" :is="pro.panels[store.activeTab]" />
             </template>
         </Column>
 
@@ -81,7 +82,7 @@
                 </Card>
             </Section>
 
-            <Section title="Go further">
+            <Section v-if="!pro" title="Go further">
                 <Card variant="highlighted" title="Pro version — coming soon">
                     <ul class="tg-pro-list">
                         <li>File &amp; image attachments forwarded to Telegram</li>
@@ -103,6 +104,7 @@ import {
 import { useWordpressAjax } from '@branch418/shared/composables';
 import { provideStore } from './composables/useStore.js';
 import { useSetupSteps } from './composables/useSetupSteps.js';
+import { usePro } from './composables/usePro.js';
 import SetupGuide from './components/SetupGuide.vue';
 import ConnectionsPanel from './components/ConnectionsPanel.vue';
 import BotsSection from './components/BotsSection.vue';
@@ -115,14 +117,16 @@ const GUIDE_HIDDEN_KEY = 'b418WpTgCf7GuideHidden';
 const store = provideStore();
 const { request } = useWordpressAjax();
 const { steps, setupComplete, go } = useSetupSteps(store);
+const pro = usePro();
 
 // Ordered to match the setup flow: ingredients → routing → message → monitoring.
-const tabs = [
+const baseTabs = [
     { key: 'bots', label: 'Bots & Chats', count: () => store.bots.length + store.chats.length },
     { key: 'connections', label: 'Connections', count: () => store.rules.length },
     { key: 'templates', label: 'Templates', count: () => store.templates.length },
     { key: 'log', label: 'Activity Log', count: () => store.log.length },
 ];
+const tabs = pro?.tabs ? pro.tabs(baseTabs, store) : baseTabs;
 
 const statsItems = computed(() => {
     const delivered = store.log.filter((entry) => entry.ok).length;

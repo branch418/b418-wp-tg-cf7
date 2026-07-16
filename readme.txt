@@ -4,7 +4,7 @@ Tags: contact form 7, telegram, notifications, cf7, forms
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,13 @@ Yes — set the optional thread ID on the chat.
 = Does it change how CF7 sends email? =
 
 No. Telegram delivery runs in addition to normal CF7 mail and never interrupts it.
+
+== Screenshots ==
+
+1. Add bots, detect chats — no ID hunting
+2. Route any form to any chat
+3. Messages that read like notifications
+4. Every delivery, at a glance
 
 == External services ==
 
