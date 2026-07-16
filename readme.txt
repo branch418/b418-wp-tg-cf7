@@ -4,7 +4,7 @@ Tags: contact form 7, telegram, notifications, cf7, forms
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,12 @@ No data is sent to Telegram unless you have configured a bot and an active conne
 This service is provided by Telegram: [Terms of Service](https://telegram.org/tos), [Privacy Policy](https://telegram.org/privacy).
 
 == Changelog ==
+
+= 1.1.1 =
+* Fixed an issue where opening "Add connection" from the setup guide/checklist could silently fail to open the modal.
+
+= 1.1.0 =
+* No visible change in this release — the free plugin's behavior is unchanged.
 
 = 1.0.0 =
 * Initial release: multiple bots and chats, form-to-chat connections, per-form message templates, test sending, chat ID detection, activity log.

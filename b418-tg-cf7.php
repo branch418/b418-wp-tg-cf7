@@ -5,7 +5,7 @@
  * Author: branch418
  * Author URI: https://branch418.dev
  * Plugin URI: https://branch418.dev/plugins/wp-tg-cf7
- * Version: 1.1.0
+ * Version: 1.1.1
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Requires Plugins: contact-form-7

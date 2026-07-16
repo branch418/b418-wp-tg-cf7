@@ -196,6 +196,12 @@ const pendingDelete = ref(null);
 
 const canCreate = computed(() => store.bots.length > 0 && store.chats.length > 0);
 
+// Keep the name in sync with the selected form/chats until the user
+// types their own; an emptied field hands naming back to auto mode.
+// Must be declared before the immediate watch below — openModal() reads
+// it, and that watch's callback can run synchronously during setup().
+const nameEdited = ref(false);
+
 // React to guide/checklist navigation ("add-connection" opens the modal).
 watch(
     () => store.pendingAction,
@@ -213,10 +219,6 @@ watch(
 const availableTemplates = computed(() =>
     store.templates.filter((tpl) => !tpl.form_id || Number(tpl.form_id) === Number(form.value.form_id))
 );
-
-// Keep the name in sync with the selected form/chats until the user
-// types their own; an emptied field hands naming back to auto mode.
-const nameEdited = ref(false);
 
 function autoName() {
     const chats = form.value.chat_ids
