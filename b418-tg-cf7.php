@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'B418_WP_TG_CF7_VERSION', '1.1.0' );
+define( 'B418_WP_TG_CF7_VERSION', '1.1.1' );
 define( 'B418_WP_TG_CF7_FILE', __FILE__ );
 define( 'B418_WP_TG_CF7_PATH', plugin_dir_path( __FILE__ ) );
 define( 'B418_WP_TG_CF7_TEMPLATES_PATH', B418_WP_TG_CF7_PATH . 'templates/' );
